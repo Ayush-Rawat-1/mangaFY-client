@@ -15,14 +15,12 @@ function Front(props){
     function handleLatestManga(newMangaArray){
       setLatestManga(newMangaArray);
       setLoaded(true);
-      console.log(newMangaArray);
-      console.log(latestManga);
     }
   
     function fetchMangaArray(){
         handleLatestManga([]);
         setLoaded(false);
-        axios.get("/api/front/",{
+        axios.get(`${process.env.SERVER_URL}/api/front/`,{
             params:{
             page:page
             }
@@ -37,7 +35,7 @@ function Front(props){
 
     function fetchNewsArray(){
         setLoaded(false);
-        axios.get("/api/news/")
+        axios.get(`${process.env.SERVER_URL}/api/news/`)
         .then((response)=>{
             handleLatestManga(response.data);
         })
@@ -48,7 +46,7 @@ function Front(props){
     
     function fetchSearchArray(){
         setLoaded(false);
-        axios.get("/api/mangaSearch/",{
+        axios.get(`${process.env.SERVER_URL}/api/mangaSearch/`,{
             params:{
                 manga_name:props.search
             }
@@ -82,9 +80,9 @@ function Front(props){
     return (
         
         <div className="container col-xxl-8 px-4 py-5">
-        {(loaded && latestManga.length>0)?
+        {loaded?
         <ImageList cols={isLaptop || isLandscape?3:2} gap={14} >
-          {latestManga.map((item) => {
+          {latestManga?.map((item) => {
             const thumbnail=item.thumb || item.article.thumbnail;
             const title=item.title || item.article.title;
             return <Link  key={thumbnail} to={`/Panel/${title}`} state={{page : item,news: props.news}} >

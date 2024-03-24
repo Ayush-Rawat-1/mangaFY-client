@@ -11,7 +11,7 @@ function MangaPage(props) {
     const [detailNews,setDetailNews]=useState([]);
     
     function fetchChapter(){
-        axios.get("/api/manga/",{
+        axios.get(`${process.env.SERVER_URL}/api/manga/`,{
             params:{
                 manga_id : details.id
             }
@@ -23,7 +23,7 @@ function MangaPage(props) {
     }
 
     function fetchNews(){
-        axios.get("/api/newsPage/",{
+        axios.get(`${process.env.SERVER_URL}/api/newsPage/`,{
             params:{
                 news_id:details.details_api.id,
                 news_title:details.details_api.title,
@@ -69,11 +69,11 @@ function MangaPage(props) {
                 <h2 className="lh-1 mb-3">Summary : </h2>
                 <p className="fw-semibold fs-5">{details.summary}</p>
                 <div className="d-grid ">
-                    <h5>Authors : {details.authors.map((item)=> item+" ")}</h5>
-                    <h5>Status : {details.status}</h5>
-                    <h5>Chapters : {details.total_chapter}</h5>
-                    <h5>Genres : {details.genres.map((item)=>item+",")}</h5>
-                    <h5>Type : {details.type}</h5>
+                    <h5>Authors : {details?.authors?.map((item)=> item+" ")}</h5>
+                    <h5>Status : {details?.status}</h5>
+                    <h5>Chapters : {details?.total_chapter}</h5>
+                    <h5>Genres : {details?.genres?.map((item)=>item+",")}</h5>
+                    <h5>Type : {details?.type}</h5>
                 </div>
             </div>}
         </div>
@@ -92,7 +92,7 @@ function MangaPage(props) {
             maxHeight: "55vh",
             overflowY: "scroll"
         }} >
-                {chapterArray.length==0?<Loader mode={props.mode} />:chapterArray.map((item,idx)=><Link key={"chl"+idx} to={`/chapter?${chapterArray[idx].id}`} >
+                {chapterArray.length==0?<Loader mode={props.mode} />:chapterArray?.map((item,idx)=><Link key={"chl"+idx} to={`/chapter?${chapterArray[idx].id}`} >
                     <Button variant="outlined" color={props.mode==="dark"?"success":"primary"} sx={{color: props.mode==="dark" && "#8cffff"}} >{idx+1}</Button>
                 </Link>
                 )}

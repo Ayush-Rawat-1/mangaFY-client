@@ -2,6 +2,7 @@ import React,{ useState,useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import CircularProgress from '@mui/material/CircularProgress';
+import Loader from "./Loader";
 
 function ShowChapter(props){
     const [activeIndex,setActiveIndex]=useState(0);
@@ -9,7 +10,7 @@ function ShowChapter(props){
     const chapterId = useLocation().search.substring(1);
     const [loaded,setLoaded]=useState(false);
     function fetchChapter(){
-        axios.get("/api/chapter/",{
+        axios.get(`${process.env.SERVER_URL}/api/chapter/`,{
             params:{
                 chapter_id : chapterId
             }
@@ -36,7 +37,7 @@ function ShowChapter(props){
     
     return(
         <div className="container col-xxl-8 px-4 py-5 text-body-emphasis">
-            {chapterImage.length>0 && <div className="carousel">
+            {chapterImage?.length>0?<div className="carousel">
                 <button onClick={previousSlide} className="carousel__btn carousel__btn--prev">
                     &lt;
                 </button>
@@ -53,7 +54,7 @@ function ShowChapter(props){
                 <button onClick={nextSlide} className="carousel__btn carousel__btn--next">
                     &gt;
                 </button>
-            </div>}
+            </div>:<Loader mode={props.mode}/>}
         </div>
     );
 }
